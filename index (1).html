@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para mi Meli 💖</title>
+<style>
+body{
+  margin:0;
+  font-family:sans-serif;
+  background:linear-gradient(135deg,#ffd6ec,#ff9ccf,#ff4fa3);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  overflow:hidden;
+  position:relative;
+}
+/* BRILLITOS */
+.sparkle{
+  position:absolute;width:6px;height:6px;background:white;border-radius:50%;opacity:0.8;
+  animation:twinkle 2s infinite ease-in-out;
+}
+@keyframes twinkle{0%,100%{opacity:0.2;transform:scale(1);}50%{opacity:1;transform:scale(1.8);}}
+
+/* CORAZONES */
+.heart-bg{
+  position:absolute;font-size:18px;animation:fallSlow 8s linear infinite;opacity:0.5;
+}
+@keyframes fallSlow{0%{transform:translateY(-10vh);}100%{transform:translateY(110vh);}}
+
+/* SECCIONES */
+.section{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center;}
+.hidden{display:none;}
+
+/* CARTA */
+.envelope{width:360px;height:240px;background:#fff0f6;border-radius:20px;
+  box-shadow:0 0 30px rgba(255,105,180,0.5),0 20px 40px rgba(0,0,0,0.3);
+  display:flex;justify-content:center;align-items:center;}
+.card{color:#c2185b;padding:20px;}
+button{
+  padding:10px 20px;
+  border:none;
+  border-radius:25px;
+  margin:10px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+  box-shadow:0 0 15px rgba(255,105,180,0.6);
+  position: relative; /* para z-index */
+}
+button:hover{transform:scale(1.1);}
+.yes{background:#ff4fa3;color:white;z-index:2;}
+.no{background:white;color:#c2185b;z-index:1;}
+
+/* EMOJIS */
+.emoji{position:absolute;font-size:24px;animation:fall 2s linear forwards;}
+@keyframes fall{0%{transform:translateY(0);opacity:1;}100%{transform:translateY(300px);opacity:0;}}
+
+/* FINAL */
+.finalCard{background:#fff0f6;padding:25px;border-radius:20px;max-width:600px;width:90%;display:flex;flex-direction:column;align-items:center;gap:15px;border:5px dashed #ff4fa3;}
+textarea{width:100%;min-height:250px;border-radius:15px;border:none;padding:15px;background:#fff0f6;font-size:16px;resize:none;}
+#preview,#collageVideo{width:80%;border-radius:15px;display:none;}
+</style>
+</head>
+<body>
+
+<!-- SECCIÓN 1 -->
+<div id="section1" class="section">
+  <div class="envelope">
+    <div class="card">
+      <h3>💖 Para mi Meli 💖</h3>
+      <p>¿Quieres ser mi San Valentín?</p>
+      <button class="yes" id="yesBtn" onclick="sayYes()">Sí</button>
+      <button class="no" onclick="sayNo()">No</button>
+    </div>
+  </div>
+</div>
+
+<!-- SECCIÓN 2 -->
+<div id="section2" class="section hidden">
+  <h2>Sabría que dirías que sí :3333</h2>
+  <button onclick="goFinal()">continuaa :33</button>
+</div>
+
+<!-- SECCIÓN 3 -->
+<div id="section3" class="section hidden">
+  <div class="finalCard">
+    <textarea readonly>
+Ola melii:33.
+Este es nuestro segundo San Valentin cmo nviecitos y realmente me hubiera encantado poder pasarlo de una manera distinta, tal vez saliendo a algun lado pero el hecho de no poder hacerlo no significa que no pueda expresar mi amor por ti. Sé que esto no es mucho pero al menos quiero que sepas lo importante que eres para mi y cuanto te necesito. 
+Muchas gracias por siempre estar aquí conmigo y por nunca dejarme solo, sé que tengo cosas por mejorar pero creeme que lo haré para que esta relación siga funcionando:3.
+Te amo mucho mi amorr no discutamos mucho, si? Al menos no hoy;3 Te amo meli, te amo cmo no tienes idea mi niñita♡
+    </textarea>
+    <input type="file" accept="image/*,video/*" onchange="handleFile(event)">
+    <img id="preview">
+    <video id="collageVideo" autoplay loop muted></video>
+  </div>
+</div>
+
+<script>
+let scaleYes=1;
+
+// Botón NO
+function sayNo(){
+  scaleYes+=0.2;
+  document.getElementById("yesBtn").style.transform=`scale(${scaleYes})`;
+  for(let i=0;i<6;i++){
+    let e=document.createElement("div");
+    e.className="emoji"; e.innerText="😡";
+    e.style.left=Math.random()*window.innerWidth+"px";
+    e.style.top="50px";
+    document.body.appendChild(e);
+    setTimeout(()=>e.remove(),2000);
+  }
+}
+
+// Botón SÍ
+function sayYes(){
+  for(let i=0;i<20;i++){
+    let e=document.createElement("div");
+    e.className="emoji"; e.innerText="🥰";
+    e.style.left=Math.random()*window.innerWidth+"px";
+    e.style.top="0px";
+    document.body.appendChild(e);
+    setTimeout(()=>e.remove(),2000);
+  }
+  setTimeout(()=>{
+    document.getElementById("section1").classList.add("hidden");
+    document.getElementById("section2").classList.remove("hidden");
+  },800);
+}
+
+// Ir a final
+function goFinal(){
+  document.getElementById("section2").classList.add("hidden");
+  document.getElementById("section3").classList.remove("hidden");
+}
+
+// Manejar imagen o video con persistencia
+function handleFile(event){
+  const file=event.target.files[0];
+  const img=document.getElementById("preview");
+  const video=document.getElementById("collageVideo");
+  const reader=new FileReader();
+  reader.onload=function(){
+    const result=reader.result;
+    if(file.type.startsWith("image/")){
+      img.src=result; img.style.display="block"; video.style.display="none";
+    } else if(file.type.startsWith("video/")){
+      video.src=result; video.style.display="block"; img.style.display="none";
+    }
+    localStorage.setItem("miArchivo", result); // guarda el archivo
+    localStorage.setItem("miTipo", file.type);
+  }
+  reader.readAsDataURL(file);
+}
+
+// Recuperar archivo al cargar la página
+window.addEventListener("load", ()=>{
+  const saved=localStorage.getItem("miArchivo");
+  const tipo=localStorage.getItem("miTipo");
+  if(saved && tipo){
+    const img=document.getElementById("preview");
+    const video=document.getElementById("collageVideo");
+    if(tipo.startsWith("image/")){
+      img.src=saved; img.style.display="block"; video.style.display="none";
+    } else if(tipo.startsWith("video/")){
+      video.src=saved; video.style.display="block"; img.style.display="none";
+    }
+  }
+});
+
+/* ✨ BRILLITOS */
+for(let i=0;i<25;i++){
+  let s=document.createElement("div");
+  s.className="sparkle";
+  s.style.left=Math.random()*100+"vw";
+  s.style.top=Math.random()*100+"vh";
+  s.style.animationDelay=Math.random()*2+"s";
+  document.body.appendChild(s);
+}
+
+/* 💖 CORAZONES */
+for(let i=0;i<15;i++){
+  let h=document.createElement("div");
+  h.className="heart-bg";
+  h.innerText="💗";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=6+Math.random()*4+"s";
+  document.body.appendChild(h);
+}
+</script>
+
+</body>
+</html>
